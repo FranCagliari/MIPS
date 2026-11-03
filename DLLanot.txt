@@ -1,0 +1,32 @@
+DEFINICAO NO
+struct Node { 
+    struct Student *student; 
+    struct Node *prev, *next;
+};
+
+3 ponteiros no node - 12 bytes
+*student = 0(t0)
+*prev = 4(t0)
+*next = 8(t0)
+
+DEFINICAO LISTA
+struct DoubledLinkedList {
+    int size;
+    struct Node *head;        /* Points the first node */
+    struct Node *tail;        /* Points the last node */
+};
+size = 0(t0)
+head = 4(t0)
+tail = 8(t0)
+
+Definicao STUDENT
+/* List element definition */
+struct Student {
+    char name[90];
+    unsigned int registration; 
+    char course[50]; 
+};
+name = 0-89(t0)
+registration = 92(t0)
+course = 96-145(t0)
+

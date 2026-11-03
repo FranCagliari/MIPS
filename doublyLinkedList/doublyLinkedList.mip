@@ -1,0 +1,29 @@
+doublyLinkedList
+C:\MipsIt\Projects\doublyLinkedList\
+Objects\
+2
+C:\MipsIt\Projects\doublyLinkedList\insertNode.s
+0
+0
+C:\MipsIt\Projects\doublyLinkedList\main.c
+1
+0
+6
+kil
+c
+m
+lnk
+gcc
+soft-float
+2
+msoft-float
+nostdinc
+2
+N
+nostdlib
+1
+crt0.o
+0
+1
+objcopy.exe -O srec doublyLinkedList.out doublyLinkedList.srec
+80020000 start
