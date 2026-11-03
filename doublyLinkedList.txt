@@ -83,9 +83,7 @@ int InsertNode(struct DoubledLinkedList *list, struct Node *newNode) {
         /* If aux == NULL, then the new student has the lower registration */
         else if (aux == NULL) {
             /* Insert after the last node (new tail node) */
-            newNode->prev = list->tail;
-            list->tail->next = newNode;
-            list->tail = newNode;
+            
         }      
         else {
             /* Insert between two nodes */
