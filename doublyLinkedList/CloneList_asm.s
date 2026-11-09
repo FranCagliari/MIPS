@@ -1,12 +1,13 @@
-
 #include <iregdef.h>
 
 #define SIZEOF_LIST       12    
 #define SIZEOF_NODE       12    
 #define SIZEOF_STUDENT    148   
 
+
 #define FRAME_SIZE        40
 
+//Constantes
 	.text
 	.globl CloneList_asm
 	.ent CloneList_asm
