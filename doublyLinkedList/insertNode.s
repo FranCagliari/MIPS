@@ -30,7 +30,7 @@ if:
 	lw t2, 0(t0)  //t2 = aux->student
 	lw t2, 92(t2) //t2 = aux->student->registration
 	
-	slt t9, t1, t2		//compara aux->registr > newNode->registr
+	slt t9, t2, t1		//compara aux->registr > newNode->registr
 	beq t9, zero, found //se t9 = 0, aux->registr =< newNode->registr
 	
 	//else

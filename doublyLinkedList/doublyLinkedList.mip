@@ -1,8 +1,11 @@
 doublyLinkedList
 C:\MipsIt\Projects\doublyLinkedList\
 Objects\
-2
-C:\MipsIt\Projects\doublyLinkedList\insertNode.s
+3
+C:\MipsIt\Projects\doublyLinkedList\InsertNode_asm.s
+0
+0
+C:\MipsIt\Projects\doublyLinkedList\CloneList_asm.s
 0
 0
 C:\MipsIt\Projects\doublyLinkedList\main.c

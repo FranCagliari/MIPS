@@ -25,6 +25,10 @@ struct DoubledLinkedList {
     struct Node *tail;        /* Points the last node */
 };
 
+/* Assembly implementations (InsertNode_asm.s and CloneList_asm.s) */
+int InsertNode_asm(struct DoubledLinkedList *list, struct Node *newNode);
+struct DoubledLinkedList *CloneList_asm(struct DoubledLinkedList *list);
+
 /* Initialize the list struct as an empty list */
 void CreateList(struct DoubledLinkedList *list) {
 
@@ -37,55 +41,58 @@ void CreateList(struct DoubledLinkedList *list) {
  *      - Return STUDENT_ALREADY_INSERTED if the student was already inserted
  *      - Return INSERTION_OK on success 
 */
-int InsertNode(struct DoubledLinkedList *list, struct Node *newNode);
-/* {
+int InsertNode(struct DoubledLinkedList *list, struct Node *newNode) {
     
-   
+    /* Auxiliary pointer */
     struct Node *aux;
     
-    
+    /* Initialize the new node prev and next pointers to NULL */
     newNode->prev = NULL;
     newNode->next = NULL;
     
-    
+    /* Verifies if the list is empty */
     if (list->size == 0) {            
-        
+        /* Empty list: insert the node as first and last */
         list->head = newNode;
         list->tail = newNode;
     }
 
-  
+    /* Search for the right place to insert the student */
+    /* Students are linked following registration order */
+    /* list->head points the higher registration */
+    /* list->tail points the lower registration */
     else {
         
         aux = list->head;
         
-        
+        /* Search the right position according to the registration */
         while (aux != NULL) 
             if (newNode->student->registration >= aux->student->registration) {
                 if (newNode->student->registration == aux->student->registration)         
-                    return STUDENT_ALREADY_INSERTED;  
+                    return STUDENT_ALREADY_INSERTED;  /* Student already inserted */
                 else
                     break;
             }                
             else
-                aux = aux->next;            
-        
-        
+                aux = aux->next;
+            
+        //endwhile
+        /* If aux == list->head, then the new student has the higher registration */
         if (aux == list->head) {
-        
+            /* Insert before the first node (new head node) */
             aux->prev = newNode;
             newNode->next = aux;
             list->head = newNode;
         } 
-        
+        /* If aux == NULL, then the new student has the lower registration */
         else if (aux == NULL) {
-        
+            /* Insert after the last node (new tail node) */
             newNode->prev = list->tail;
             list->tail->next = newNode;
             list->tail = newNode;
-        }      
+        }
         else {
-        
+            /* Insert between two nodes */
             aux->prev->next = newNode;
             newNode->prev = aux->prev;
             aux->prev = newNode;
@@ -93,10 +100,10 @@ int InsertNode(struct DoubledLinkedList *list, struct Node *newNode);
         }        
     }
 
-    list->size++;
+    list->size++;   /* Update the list size */
     
-    return INSERTION_OK;      
-} */
+    return INSERTION_OK;       /* Node inserted */
+}
 
 /* Allocate memory to create a clone of the list */
 struct DoubledLinkedList *CloneList(struct DoubledLinkedList *list) {
@@ -163,8 +170,7 @@ int main() {
 
     struct DoubledLinkedList list, *clonedList;
     struct Node *newNode;
-   	int r;
-   	 
+    
     CreateList(&list);
            
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -172,21 +178,15 @@ int main() {
     strcpy(newNode->student->name,"Ozzy Osbourne");
     newNode->student->registration = 666;
     strcpy(newNode->student->course,"Heavy Metal");
-    //alteracao pra verificar funcionalidade
-    //nao aplicada nas outras
-    //deletar futuramente
-    r = InsertNode(&list,newNode);
-    if ( r == STUDENT_ALREADY_INSERTED)  // Empty list: insert the node as first and last 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Empty list: insert the node as first and last */
         printf("Student %s already inserted.\n",newNode->student->name);
-    else if (r == INSERTION_OK) printf("Registered. \n");
-    else printf("AAAAAA");
     
     newNode = (struct Node *)malloc(sizeof(struct Node));
     newNode->student = (struct Student *)malloc(sizeof(struct Student));
     strcpy(newNode->student->name,"Ozzy Osbourne");
     newNode->student->registration = 666;
     strcpy(newNode->student->course,"Heavy Metal");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)  // Try to insert an already inserted student 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Try to insert an already inserted student */
         printf("Student %s already inserted.\n",newNode->student->name);
         
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -194,7 +194,7 @@ int main() {
     strcpy(newNode->student->name,"Scott Ian");
     newNode->student->registration = 670;
     strcpy(newNode->student->course,"Thrash Metal");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)  // Inserts before the first node (new head node) 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Inserts before the first node (new head node) */
         printf("Student %s already inserted.\n",newNode->student->name);
         
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -202,7 +202,7 @@ int main() {
     strcpy(newNode->student->name,"Vince Neil");
     newNode->student->registration = 668;
     strcpy(newNode->student->course,"Hard Rock");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)  // Inserts between two nodes 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Inserts between two nodes */
         printf("Student %s already inserted.\n",newNode->student->name);
         
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -210,7 +210,7 @@ int main() {
     strcpy(newNode->student->name,"Lemmy Kilmister (R.I.P.)");
     newNode->student->registration = 660;
     strcpy(newNode->student->course,"Extreme Rock and Roll");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)  // Inserts after the last node (new tail node) 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Inserts after the last node (new tail node) */
         printf("Student %s already inserted.\n",newNode->student->name);
         
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -218,7 +218,7 @@ int main() {
     strcpy(newNode->student->name,"Robert Johnson (R.I.P.)");
     newNode->student->registration = 671;
     strcpy(newNode->student->course,"Delta Blues");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)  // Inserts before the first node (new head node) 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)  /* Inserts before the first node (new head node) */
         printf("Student %s already inserted.\n",newNode->student->name);
         
     newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -226,20 +226,20 @@ int main() {
     strcpy(newNode->student->name,"Robert Johnson (R.I.P.)");
     newNode->student->registration = 671;
     strcpy(newNode->student->course,"Delta Blues");
-    if (InsertNode(&list,newNode) == STUDENT_ALREADY_INSERTED)   // Try to insert an already inserted student 
+    if (InsertNode_asm(&list,newNode) == STUDENT_ALREADY_INSERTED)   /* Try to insert an already inserted student */
         printf("Student %s already inserted.\n",newNode->student->name);
-  	
+  
     printf("\nList size: %d\n",list.size);
     PrintList(&list);
     printf("\n");
     PrintListReverse(&list); 
 
-   /* clonedList = CloneList(&list);
+    clonedList = CloneList_asm(&list);
     printf("\nCloned list\n");
     printf("List size: %d\n",clonedList->size);
     PrintList(clonedList);
     printf("\n");
-    PrintListReverse(clonedList); */
+    PrintListReverse(clonedList); 
 
     return 0;
 }
