@@ -7,7 +7,6 @@
 
 #define FRAME_SIZE        40
 
-//Constantes
 	.text
 	.globl CloneList_asm
 	.ent CloneList_asm
