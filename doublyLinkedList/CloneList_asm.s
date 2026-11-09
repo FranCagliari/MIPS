@@ -10,7 +10,7 @@
 	.text
 	.globl CloneList_asm
 	.ent CloneList_asm
-
+//
 CloneList_asm:
 	.frame sp, FRAME_SIZE, ra
 	.mask 0x800F0000, -4        // ra e s0-s3 salvos na pilha
